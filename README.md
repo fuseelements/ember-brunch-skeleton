@@ -50,7 +50,7 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
 2. Indent using soft tabs set at 2 spaces. Continuation indents should be set to 4 spaces.
 3. Use the strict mode pragma liberally (i.e., `'use strict';`).
 4. For the model, view, and controller, implement corresponding unit tests in the matching sub-directory of the `test` directory.
-5. The unit tests follow uses the BDD expect assertion style. Unfortunately, the should assertion style is not compatible with IE.    
+5. The unit tests follow uses the BDD expect assertion style. Unfortunately, the should assertion style is not compatible with IE.
 
 ## Overview
 
@@ -87,25 +87,25 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
       models/
       vendor/
         scripts/
-          chai-1.3.0.js
-          mocha-1.7.0.js
-          sinon-1.5.0.js
-          sinon-chai-2.1.2.js
+          chai-1.4.0.js
+          mocha-1.7.2.js
+          sinon-1.5.2.js
+          sinon-chai-2.2.0.js
         styles/
-          mocha-1.7.0.css
+          mocha-1.7.2.css
       views/
       test-helpers.coffee
     /tools/
       testacular.conf.js
     /vendor/
       scripts/
-        bootstrap-2.2.1.js
+        bootstrap-2.2.2.js
         console-helper.js
         ember-1.0.0-pre.2.js
         handlebars-1.0.rc.1.js
-        jquery-1.8.2.js
+        jquery-1.8.3.js
       styles/
-        bootstrap-2.2.1.css
+        bootstrap-2.2.2.css
     /public/
       img/
       stylesheets/

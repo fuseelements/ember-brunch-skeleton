@@ -64,21 +64,22 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
           glyphicons-halflings-white.png
           glyphicons-halflings.png
       controllers/
-        application_controller.js
         index.js
       models/
         index.js
+      routes/
+        index.js
+        map.js
       styles/
         application.styl
       templates/
+        about.hbs
         application.hbs
         index.js
       views/
-        application_view.js
         index.js
       app.js
       initialize.js
-      router.js
     /test/
       assets/
         test/
@@ -87,12 +88,12 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
       models/
       vendor/
         scripts/
-          chai-1.4.0.js
-          mocha-1.7.2.js
+          chai-1.4.2.js
+          mocha-1.8.1.js
           sinon-1.5.2.js
-          sinon-chai-2.2.0.js
+          sinon-chai-2.3.1.js
         styles/
-          mocha-1.7.2.css
+          mocha-1.8.1.css
       views/
       test-helpers.coffee
     /tools/
@@ -101,9 +102,9 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
       scripts/
         bootstrap-2.2.2.js
         console-helper.js
-        ember-1.0.0-pre.2.js
-        handlebars-1.0.rc.1.js
-        jquery-1.8.3.js
+        ember-1.0.0-pre.4.js
+        handlebars-1.0.rc.2.js
+        jquery-1.9.0.min.js
       styles/
         bootstrap-2.2.2.css
     /public/
@@ -114,7 +115,8 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
 * `config.coffee` contains your app configuration. This is where you configure what Plugins / Languages to use and what rules are applied to them.
 * `app/` and subdirectories (excluding `app/assets`) contains files that are to be compiled. Javascript files are automatically wrapped as commonjs style modules so they can be loaded via `require('module/location')`.
 * `app/assets` contains images / static files. The contents of the directory are copied to `public/` without any modification.
-* `app/models/index.js`, `app/views/index.js`, and `app/controllers/index.js` are loaded in `initialize.js` and are responsible for loading their respective classes.
+* `app/controllers/index.js`, `app/models/index.js`, `app/routes/index.js`, and `app/views/index.js` are loaded in `initialize.js` and are responsible for loading their respective classes.
+* `app/templates/index.js` is loaded in `initialize.js` to register pre-compiled templates in Ember.TEMPLATES.
 * `test/` contains unit tests.
 * `vendor/` contains all third-party code. The code wouldn’t be wrapped in modules, it would be loaded directly into the browser.
 

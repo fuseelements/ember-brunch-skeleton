@@ -8,6 +8,7 @@ basePath = '..';
 
 // list of files / patterns to load in the browser
 files = [
+  'vendor/scripts/jquery-1.9.0.min.js',
   'public/javascripts/vendor.js',
   'public/javascripts/app.js',
   'public/test/javascripts/test-vendor.js',
@@ -19,7 +20,7 @@ files = [
 
 // list of files to exclude
 exclude = [
-  
+
 ];
 
 

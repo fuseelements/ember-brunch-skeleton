@@ -4,6 +4,9 @@ path = require 'path'
 # See docs at http://brunch.readthedocs.org/en/latest/config.html.
 
 exports.config =
+  modules:
+    addSourceURLs: true
+
   files:
     javascripts:
       defaultExtension: 'js',
@@ -16,9 +19,8 @@ exports.config =
       order:
         before: [
           'vendor/scripts/console-helper.js',
-          'vendor/scripts/jquery-1.8.3.js',
-          'vendor/scripts/handlebars-1.0.rc.1.js',
-          'vendor/scripts/ember-1.0.0-pre.2.js',
+          'vendor/scripts/handlebars-1.0.rc.2.js',
+          'vendor/scripts/ember-1.0.0-pre.4.js',
           'vendor/scripts/bootstrap-2.2.2.js'
         ]
 
@@ -31,6 +33,7 @@ exports.config =
 
     templates:
       precompile: true
+      root: 'templates/'
       defaultExtension: 'hbs'
       joinTo:
         'javascripts/app.js': /^app/
@@ -67,8 +70,9 @@ exports.config =
       jquery: true
       node: true
     globals:
-      describe: true
-      chai: true
-      it: true
-      Em: true
-      jQuery: true
+      describe: false
+      chai: false
+      DS: false
+      Em: false
+      it: false
+      jQuery: false

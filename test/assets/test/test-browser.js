@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012 Fuse Elements, LLC. All rights reserved.
+/*
+ * Copyright (c) 2013 Fuse Elements, LLC. All rights reserved.
  */
 
 /*global mocha:false, $:false */

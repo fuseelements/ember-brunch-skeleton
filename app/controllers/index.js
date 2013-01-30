@@ -1,9 +1,11 @@
-/**
- * Copyright (c) 2012 Fuse Elements, LLC. All rights reserved.
+/*
+ * Copyright (c) 2013 Fuse Elements, LLC. All rights reserved.
  */
 
-var app = require('app');
+'use strict';
 
-// Require all controllers below.
+var App = require('app');
 
-app.ApplicationController = require('./application_controller');
+// Require all custom controllers below.
+
+//App.MyController = require('controllers/my_controller');

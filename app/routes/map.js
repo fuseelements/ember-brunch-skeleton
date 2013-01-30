@@ -6,6 +6,7 @@
 
 var App = require('app');
 
-// Require all custom views below.
-
-//App.MyView = require('views/myview');
+App.Router.map(function () {
+  // Define routes here.
+  this.route('about');
+});

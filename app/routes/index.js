@@ -6,6 +6,8 @@
 
 var App = require('app');
 
-// Require all custom views below.
+require('routes/map');
 
-//App.MyView = require('views/myview');
+// Require all custom routes below.
+
+//App.MyModel = require('./my_model');

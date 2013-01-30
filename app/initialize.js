@@ -1,16 +1,16 @@
-/**
- * Copyright (c) 2012 Fuse Elements, LLC. All rights reserved.
+/*
+ * Copyright (c) 2013 Fuse Elements, LLC. All rights reserved.
  */
 
-var app = require('app');
+'use strict';
+
+var App = require('app');
 
 // Bind App to window.App (or a different property name) for use in the Handlebars templates.
-window.App = app;
+window.App = App;
 
+require('templates');
 require('models');
 require('controllers');
 require('views');
-require('router');
-
-app.initialize();
-
+require('routes');

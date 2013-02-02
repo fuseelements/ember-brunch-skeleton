@@ -4151,3 +4151,13 @@ if (typeof module == "object" && typeof require == "function") {
 }(typeof sinon == "object" && sinon || null, typeof window != "undefined" ? window : global));
 
 return sinon;}.call(typeof window != 'undefined' && window || {}));
+
+// -----------------------------------------------------------
+// JCB (2-Feb-13): Patch sinon.js to export sinon as a global
+// when used with brunch 1.5.
+// -----------------------------------------------------------
+if (typeof window != 'undefined' && window && !window.sinon) {
+  window.sinon = sinon;
+}
+// -----------------------------------------------------------
+

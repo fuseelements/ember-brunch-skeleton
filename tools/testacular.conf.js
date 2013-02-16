@@ -8,12 +8,13 @@ basePath = '..';
 
 // list of files / patterns to load in the browser
 files = [
-  'test/assets/jquery-1.9.1.min.js',
+  'test/assets/test/scripts/jquery-1.9.1.min.js',
   'public/javascripts/vendor.js',
+  'test/assets/test/scripts/ember.js',
   'public/javascripts/app.js',
   'public/test/javascripts/test-vendor.js',
   MOCHA_ADAPTER,
-  'test/assets/test/test-browser.js',
+  'test/assets/test/scripts/test-browser.js',
   'public/test/javascripts/test.js'
 ];
 

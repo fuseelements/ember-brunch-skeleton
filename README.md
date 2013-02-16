@@ -11,8 +11,8 @@ To install the project's tool dependencies, execute `npm install` in the project
 
 To build the project, execute `brunch build` in the project directory. The
 results of the build are output to the `public` sub-directory. A production build
-should append the command option `--minify`; use `brunch build --minify` to produce
-a production deployment.
+should append the command option `--optimize`; use `brunch build --optimize` to
+produce a production deployment.
 
 During development, to continuously rebuild the project on every change, execute `brunch watch`.
 To run the simple http development server, execute `brunch watch --server`.
@@ -40,8 +40,8 @@ To run the simple http development server, execute `brunch watch --server`.
 2. Controllers are responsible for interacting with model objects; a view should not directly interact with model objects.
 3. Views are responsible for handling the DOM, not the controller. If the controller needs to walk the view hierarchy, you have sinned.
 4. Views communicate with the controller, not directly with the model objects.
-5. View template context is automatically bound to the controller’s content.
-6. The router coordinates application state and transtitions between states. This is more comprehensive than routing URLs.
+5. View template context is automatically bound to its controller.
+6. The router coordinates application state and transtitions between states.
 
 ## Coding Guidelines
 
@@ -50,7 +50,7 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
 2. Indent using soft tabs set at 2 spaces. Continuation indents should be set to 4 spaces.
 3. Use the strict mode pragma liberally (i.e., `'use strict';`).
 4. For the model, view, and controller, implement corresponding unit tests in the matching sub-directory of the `test` directory.
-5. The unit tests follow uses the BDD expect assertion style. Unfortunately, the should assertion style is not compatible with IE.
+5. The unit tests use the BDD expect assertion style. Unfortunately, the should assertion style is not compatible with IE.
 
 ## Overview
 
@@ -63,6 +63,9 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
         img/
           glyphicons-halflings-white.png
           glyphicons-halflings.png
+        scripts/
+          ember.js
+          ember.min.js
       controllers/
         index.js
       models/
@@ -84,6 +87,10 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
       assets/
         test/
           index.html
+          scripts/
+            ember.min.js
+            jquery-1.9.1.min.js
+            test-browser.js
       controllers/
       models/
       vendor/
@@ -101,10 +108,7 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
     /vendor/
       scripts/
         bootstrap-2.2.2.js
-        console-helper.js
-        ember-1.0.0-pre.4.js
-        handlebars-1.0.rc.2.js
-        jquery-1.9.0.min.js
+        handlebars-1.0.0-rc.3.js
       styles/
         bootstrap-2.2.2.css
     /public/
@@ -174,4 +178,3 @@ headless tests launch Mocha in [jsdom](https://github.com/tmpvar/jsdom) console 
 * [Chai](http://chaijs.com) is a BDD / TDD assertion library support assert, expect, and should matchers.
 * [Sinon](http://sinonjs.org) is test spy, stub, and mock library for JavaScript.
 * [Sinon-Chai](https://github.com/domenic/sinon-chai) extends Chai with assertions for the Sinon.JS mocking library.
-

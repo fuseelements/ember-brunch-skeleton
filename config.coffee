@@ -21,7 +21,7 @@ exports.config =
           'vendor/scripts/console-helper.js',
           'vendor/scripts/handlebars-1.0.rc.2.js',
           'vendor/scripts/ember-1.0.0-pre.4.js',
-          'vendor/scripts/bootstrap-2.2.2.js'
+          'vendor/scripts/bootstrap.js'
         ]
 
     stylesheets:
@@ -29,7 +29,7 @@ exports.config =
         'stylesheets/app.css': /^(app|vendor)/
         'test/stylesheets/test.css': /^test/
       order:
-        before: ['vendor/styles/bootstrap-2.2.2.css']
+        before: ['vendor/styles/bootstrap.css']
 
     templates:
       precompile: true

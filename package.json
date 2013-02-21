@@ -1,8 +1,8 @@
 {
-  "author": "<author>",
-  "name": "<name>",
-  "description": "<description>",
-  "version": "0.0.1",
+  "author": "Jon Buffington",
+  "name": "ember-brunch-skeleton",
+  "description": "Is an Ember.js skeleton project for use by brunch.io.",
+  "version": "0.1.0",
   "homepage": "",
   "repository": {
     "type": "git",

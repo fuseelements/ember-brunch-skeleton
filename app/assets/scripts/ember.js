@@ -1,5 +1,5 @@
-// Version: v1.0.0-rc.1-51-g892498d
-// Last commit: 892498d (2013-02-20 20:36:56 -0800)
+// Version: v1.0.0-rc.1-77-g4c606ac
+// Last commit: 4c606ac (2013-02-26 01:50:18 -0800)
 
 
 (function() {
@@ -150,8 +150,8 @@ Ember.deprecateFunc = function(message, func) {
 
 })();
 
-// Version: v1.0.0-rc.1-51-g892498d
-// Last commit: 892498d (2013-02-20 20:36:56 -0800)
+// Version: v1.0.0-rc.1-77-g4c606ac
+// Last commit: 4c606ac (2013-02-26 01:50:18 -0800)
 
 
 (function() {
@@ -296,6 +296,15 @@ Ember.LOG_STACKTRACE_ON_DEPRECATION = (Ember.ENV.LOG_STACKTRACE_ON_DEPRECATION !
   @default Ember.EXTEND_PROTOTYPES
 */
 Ember.SHIM_ES5 = (Ember.ENV.SHIM_ES5 === false) ? false : Ember.EXTEND_PROTOTYPES;
+
+/**
+  Determines whether Ember logs info about version of used libraries
+
+  @property LOG_VERSION
+  @type Boolean
+  @default true
+*/
+Ember.LOG_VERSION = (Ember.ENV.LOG_VERSION === false) ? false : true;
 
 /**
   Empty function. Useful for some operations.
@@ -6123,7 +6132,6 @@ define("container",
       register: function(type, name, factory, options) {
         var fullName;
 
-
         if (type.indexOf(':') !== -1){
           options = factory;
           factory = name;
@@ -6133,15 +6141,23 @@ define("container",
           fullName = type + ":" + name;
         }
 
-        this.registry.set(fullName, factory);
-        this._options.set(fullName, options || {});
+        var normalizedName = this.normalize(fullName);
+
+        this.registry.set(normalizedName, factory);
+        this._options.set(normalizedName, options || {});
       },
 
       resolve: function(fullName) {
         return this.resolver(fullName) || this.registry.get(fullName);
       },
 
+      normalize: function(fullName) {
+        return fullName;
+      },
+
       lookup: function(fullName, options) {
+        fullName = this.normalize(fullName);
+
         options = options || {};
 
         if (this.cache.has(fullName) && options.singleton !== false) {
@@ -6270,7 +6286,8 @@ define("container",
     }
 
     function factoryFor(container, fullName) {
-      return container.resolve(fullName);
+      var name = container.normalize(fullName);
+      return container.resolve(name);
     }
 
     function instantiate(container, fullName) {
@@ -6740,6 +6757,20 @@ Ember.Error = function() {
 };
 
 Ember.Error.prototype = Ember.create(Error.prototype);
+
+})();
+
+
+
+(function() {
+/**
+  Expose RSVP implementation
+
+  @class RSVP
+  @namespace Ember
+  @constructor
+*/
+Ember.RSVP = requireModule('rsvp');
 
 })();
 
@@ -11512,6 +11543,25 @@ Ember.ObjectProxy = Ember.Object.extend(
   }
 });
 
+Ember.ObjectProxy.reopenClass({
+  create: function () {
+    var mixin, prototype, i, l, properties, keyName;
+    if (arguments.length) {
+      prototype = this.proto();
+      for (i = 0, l = arguments.length; i < l; i++) {
+        properties = arguments[i];
+        for (keyName in properties) {
+          if (!properties.hasOwnProperty(keyName) || keyName in prototype) { continue; }
+          if (!mixin) mixin = {};
+          mixin[keyName] = null;
+        }
+      }
+      if (mixin) this._initMixins([mixin]);
+    }
+    return this._super.apply(this, arguments);
+  }
+});
+
 })();
 
 
@@ -11832,7 +11882,7 @@ if (ignore.length>0) {
 /**
   The NativeArray mixin contains the properties needed to to make the native
   Array support Ember.MutableArray and all of its dependent APIs. Unless you
-  have `Ember.EXTEND_PROTOTYPES or `Ember.EXTEND_PROTOTYPES.Array` set to
+  have `Ember.EXTEND_PROTOTYPES` or `Ember.EXTEND_PROTOTYPES.Array` set to
   false, this will be applied automatically. Otherwise you can apply the mixin
   at anytime by calling `Ember.NativeArray.activate`.
 
@@ -12408,7 +12458,8 @@ Ember.ArrayController = Ember.ArrayProxy.extend(Ember.ControllerMixin,
 
   objectAtContent: function(idx) {
     var length = get(this, 'length'),
-        object = get(this,'arrangedContent').objectAt(idx);
+        arrangedContent = get(this,'arrangedContent'),
+        object = arrangedContent && arrangedContent.objectAt(idx);
 
     if (idx >= 0 && idx < length) {
       var controllerClass = this.lookupItemController(object);
@@ -12559,15 +12610,16 @@ Ember.$ = jQuery;
 @module ember
 @submodule ember-views
 */
+if (Ember.$) {
+  // http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html#dndevents
+  var dragEvents = Ember.String.w('dragstart drag dragenter dragleave dragover drop dragend');
 
-// http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html#dndevents
-var dragEvents = Ember.String.w('dragstart drag dragenter dragleave dragover drop dragend');
-
-// Copies the `dataTransfer` property from a browser event object onto the
-// jQuery event object for the specified events
-Ember.EnumerableUtils.forEach(dragEvents, function(eventName) {
-  Ember.$.event.fixHooks[eventName] = { props: ['dataTransfer'] };
-});
+  // Copies the `dataTransfer` property from a browser event object onto the
+  // jQuery event object for the specified events
+  Ember.EnumerableUtils.forEach(dragEvents, function(eventName) {
+    Ember.$.event.fixHooks[eventName] = { props: ['dataTransfer'] };
+  });
+}
 
 })();
 
@@ -12584,7 +12636,8 @@ Ember.EnumerableUtils.forEach(dragEvents, function(eventName) {
 // Internet Explorer prior to 9 does not allow setting innerHTML if the first element
 // is a "zero-scope" element. This problem can be worked around by making
 // the first node an invisible text node. We, like Modernizr, use &shy;
-var needsShy = (function(){
+
+var needsShy = this.document && (function(){
   var testEl = document.createElement('div');
   testEl.innerHTML = "<div></div>";
   testEl.firstChild.innerHTML = "<script></script>";
@@ -12594,7 +12647,7 @@ var needsShy = (function(){
 // IE 8 (and likely earlier) likes to move whitespace preceeding
 // a script tag to appear after it. This means that we can
 // accidentally remove whitespace when updating a morph.
-var movesWhitespace = (function() {
+var movesWhitespace = this.document && (function() {
   var testEl = document.createElement('div');
   testEl.innerHTML = "Test: <script type='text/x-placeholder'></script>Value";
   return testEl.childNodes[0].nodeValue === 'Test:' &&
@@ -13426,8 +13479,9 @@ Ember.EventDispatcher = Ember.Object.extend(
 // Add a new named queue for rendering views that happens
 // after bindings have synced, and a queue for scheduling actions
 // that that should occur after view rendering.
-var queues = Ember.run.queues;
-queues.splice(Ember.$.inArray('actions', queues)+1, 0, 'render', 'afterRender');
+var queues = Ember.run.queues,
+    indexOf = Ember.ArrayPolyfills.indexOf;
+queues.splice(indexOf.call(queues, 'actions')+1, 0, 'render', 'afterRender');
 
 })();
 
@@ -15673,17 +15727,24 @@ Ember.View = Ember.CoreView.extend(
   // once the view has been inserted into the DOM, legal manipulations
   // are done on the DOM element.
 
+function notifyMutationListeners() {
+  Ember.run.once(Ember.View, 'notifyMutationListeners');
+}
+
 var DOMManager = {
   prepend: function(view, html) {
     view.$().prepend(html);
+    notifyMutationListeners();
   },
 
   after: function(view, html) {
     view.$().after(html);
+    notifyMutationListeners();
   },
 
   html: function(view, html) {
     view.$().html(html);
+    notifyMutationListeners();
   },
 
   replace: function(view) {
@@ -15693,15 +15754,18 @@ var DOMManager = {
 
     view._insertElementLater(function() {
       Ember.$(element).replaceWith(get(view, 'element'));
+      notifyMutationListeners();
     });
   },
 
   remove: function(view) {
     view.$().remove();
+    notifyMutationListeners();
   },
 
   empty: function(view) {
     view.$().empty();
+    notifyMutationListeners();
   }
 };
 
@@ -15815,6 +15879,20 @@ Ember.View.reopenClass({
     }
   }
 });
+
+var mutation = Ember.Object.extend(Ember.Evented).create();
+
+Ember.View.addMutationListener = function(callback) {
+  mutation.on('change', callback);
+};
+
+Ember.View.removeMutationListener = function(callback) {
+  mutation.off('change', callback);
+};
+
+Ember.View.notifyMutationListeners = function() {
+  mutation.trigger('change');
+};
 
 /**
   Global views hash
@@ -16975,15 +17053,15 @@ define("metamorph",
 
     var K = function(){},
         guid = 0,
-        document = window.document,
+        document = this.document,
 
         // Feature-detect the W3C range API, the extended check is for IE9 which only partially supports ranges
-        supportsRange = ('createRange' in document) && (typeof Range !== 'undefined') && Range.prototype.createContextualFragment,
+        supportsRange = document && ('createRange' in document) && (typeof Range !== 'undefined') && Range.prototype.createContextualFragment,
 
         // Internet Explorer prior to 9 does not allow setting innerHTML if the first element
         // is a "zero-scope" element. This problem can be worked around by making
         // the first node an invisible text node. We, like Modernizr, use &shy;
-        needsShy = (function(){
+        needsShy = document && (function(){
           var testEl = document.createElement('div');
           testEl.innerHTML = "<div></div>";
           testEl.firstChild.innerHTML = "<script></script>";
@@ -16994,7 +17072,7 @@ define("metamorph",
         // IE 8 (and likely earlier) likes to move whitespace preceeding
         // a script tag to appear after it. This means that we can
         // accidentally remove whitespace when updating a morph.
-        movesWhitespace = (function() {
+        movesWhitespace = document && (function() {
           var testEl = document.createElement('div');
           testEl.innerHTML = "Test: <script type='text/x-placeholder'></script>Value";
           return testEl.childNodes[0].nodeValue === 'Test:' &&
@@ -18098,22 +18176,30 @@ Ember.Handlebars.resolvePaths = function(options) {
 var set = Ember.set, get = Ember.get;
 var Metamorph = requireModule('metamorph');
 
+function notifyMutationListeners() {
+  Ember.run.once(Ember.View, 'notifyMutationListeners');
+}
+
 // DOMManager should just abstract dom manipulation between jquery and metamorph
 var DOMManager = {
   remove: function(view) {
     view.morph.remove();
+    notifyMutationListeners();
   },
 
   prepend: function(view, html) {
     view.morph.prepend(html);
+    notifyMutationListeners();
   },
 
   after: function(view, html) {
     view.morph.after(html);
+    notifyMutationListeners();
   },
 
   html: function(view, html) {
     view.morph.html(html);
+    notifyMutationListeners();
   },
 
   // This is messed up.
@@ -18136,11 +18222,13 @@ var DOMManager = {
       morph.replaceWith(buffer.string());
       view.transitionTo('inDOM');
       view.triggerRecursively('didInsertElement');
+      notifyMutationListeners();
     });
   },
 
   empty: function(view) {
     view.morph.html("");
+    notifyMutationListeners();
   }
 };
 
@@ -23531,13 +23619,15 @@ Ember.onLoad('Ember.Handlebars', function() {
   function resolveParams(context, params, options) {
     var resolved = handlebarsResolve(context, params, options);
     return map.call(resolved, unwrap);
-  }
 
-  function unwrap(object) {
-    if (Ember.ControllerMixin.detect(object)) {
-      return unwrap(get(object, 'model'));
-    } else {
-      return object;
+    function unwrap(object, i) {
+      if (params[i] === 'controller') { return object; }
+
+      if (Ember.ControllerMixin.detect(object)) {
+        return unwrap(get(object, 'model'));
+      } else {
+        return object;
+      }
     }
   }
 
@@ -24466,7 +24556,7 @@ Ember.HashLocation = Ember.Object.extend({
 
         set(self, 'lastSetURL', null);
 
-        callback(location.hash.substr(1));
+        callback(path);
       });
     });
   },
@@ -25046,11 +25136,13 @@ var Application = Ember.Application = Ember.Namespace.extend({
       this.scheduleInitialize();
     }
 
-    Ember.debug('-------------------------------');
-    Ember.debug('Ember.VERSION : ' + Ember.VERSION);
-    Ember.debug('Handlebars.VERSION : ' + Ember.Handlebars.VERSION);
-    Ember.debug('jQuery.VERSION : ' + Ember.$().jquery);
-    Ember.debug('-------------------------------');
+    if ( Ember.LOG_VERSION ) {
+      Ember.debug('-------------------------------');
+      Ember.debug('Ember.VERSION : ' + Ember.VERSION);
+      Ember.debug('Handlebars.VERSION : ' + Ember.Handlebars.VERSION);
+      Ember.debug('jQuery.VERSION : ' + Ember.$().jquery);
+      Ember.debug('-------------------------------');
+    }
   },
 
   /**
@@ -25410,6 +25502,7 @@ Ember.Application.reopenClass({
     Ember.Container.defaultContainer = Ember.Container.defaultContainer || container;
 
     container.set = Ember.set;
+    container.normalize = normalize;
     container.resolver = resolverFor(namespace);
     container.optionsForType('view', { singleton: false });
     container.optionsForType('template', { instantiate: false });
@@ -25449,6 +25542,7 @@ function resolverFor(namespace) {
 
     if (type === 'template') {
       var templateName = name.replace(/\./g, '/');
+
       if (Ember.TEMPLATES[templateName]) {
         return Ember.TEMPLATES[templateName];
       }
@@ -25479,8 +25573,30 @@ function resolverFor(namespace) {
   };
 }
 
-Ember.runLoadHooks('Ember.Application', Ember.Application);
+function normalize(fullName) {
+  var split = fullName.split(':'),
+      type = split[0],
+      name = split[1];
 
+
+  if (type !== 'template') {
+    var result = name;
+
+    if (result.indexOf('.') > -1) {
+      result = result.replace(/\.(.)/g, function(m) { return m[1].toUpperCase(); });
+    }
+
+    if (name.indexOf('_') > -1) {
+      result = result.replace(/_(.)/g, function(m) { return m[1].toUpperCase(); });
+    }
+
+    return type + ':' + result;
+  } else {
+    return fullName;
+  }
+}
+
+Ember.runLoadHooks('Ember.Application', Ember.Application);
 
 })();
 
@@ -26827,8 +26943,8 @@ Ember States
 
 
 })();
-// Version: v1.0.0-rc.1-51-g892498d
-// Last commit: 892498d (2013-02-20 20:36:56 -0800)
+// Version: v1.0.0-rc.1-77-g4c606ac
+// Last commit: 4c606ac (2013-02-26 01:50:18 -0800)
 
 
 (function() {

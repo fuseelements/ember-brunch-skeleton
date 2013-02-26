@@ -18,9 +18,8 @@ exports.config =
 
       order:
         before: [
-          'vendor/scripts/console-helper.js',
-          'vendor/scripts/handlebars-1.0.rc.2.js',
-          'vendor/scripts/ember-1.0.0-pre.4.js',
+          'vendor/scripts/handlebars-1.0.rc.2.js'
+          'vendor/scripts/ember-1.0.0-pre.4.js'
           'vendor/scripts/bootstrap.js'
         ]
 
@@ -74,5 +73,7 @@ exports.config =
       chai: false
       DS: false
       Em: false
+      Ember: false
       it: false
       jQuery: false
+      $: false

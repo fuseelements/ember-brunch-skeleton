@@ -1,20 +1,14 @@
-fs = require 'fs'
-path = require 'path'
-
-# See docs at http://brunch.readthedocs.org/en/latest/config.html.
-
 exports.config =
   modules:
     addSourceURLs: true
 
   files:
     javascripts:
-      defaultExtension: 'js',
       joinTo:
-        'javascripts/app.js': /^app/
-        'javascripts/vendor.js': /^vendor/
-        'test/javascripts/test.js': /^test(\/|\\)(?!vendor)/
-        'test/javascripts/test-vendor.js': /^test(\/|\\)(?=vendor)/
+        'scripts/app.js': /^app/
+        'scripts/vendor.js': /^vendor/
+        'test/scripts/test.js': /^test(\/|\\)(?!vendor)/
+        'test/scripts/test-vendor.js': /^test(\/|\\)(?=vendor)/
 
       order:
         before: [
@@ -35,7 +29,7 @@ exports.config =
       root: 'templates/'
       defaultExtension: 'hbs'
       joinTo:
-        'javascripts/app.js': /^app/
+        'scripts/app.js': /^app/
 
   server:
     port: 3333

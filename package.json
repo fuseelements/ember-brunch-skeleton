@@ -27,7 +27,6 @@
     "chai": "*",
     "mocha": "*",
     "sinon": "*",
-    "sinon-chai": "*",
-    "jshint": "*"
+    "sinon-chai": "*"
   }
 }

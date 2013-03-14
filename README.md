@@ -15,7 +15,7 @@ should append the command option `--optimize`; use `brunch build --optimize` to
 produce a production deployment.
 
 During development, to continuously rebuild the project on every change, execute `brunch watch`.
-To run the simple http development server, execute `brunch watch --server`.
+To run the simple http development server, execute `brunch watch --server`. You can the visit <http://localhost:3333/develop.html> to load your app.
 
 ## Configure [git-flow](http://nvie.com/posts/a-successful-git-branching-model/) workflow support
 
@@ -60,6 +60,7 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
     /app/
       assets/
         index.html
+        develop.html
         img/
           glyphicons-halflings-white.png
           glyphicons-halflings.png
@@ -159,7 +160,7 @@ The CSS includes a number of element and class styles ranging from typography to
 Unit and integration tests are placed in the `test` directory. To run the tests interactively in the browser:
 
 1. Execute `npm start` or `brunch watch --server` in your project directory.
-2. Visit <localhost:3333/test> in your browser.
+2. Visit <http://localhost:3333/test> in your browser.
 
 To run headless tests using brunch's built-in console-based test runner, execute `brunch test`. The
 headless tests launch Mocha in [jsdom](https://github.com/tmpvar/jsdom) console environment.

@@ -9,13 +9,13 @@ basePath = '..';
 // list of files / patterns to load in the browser
 files = [
   'test/assets/test/scripts/jquery-1.9.1.min.js',
-  'public/javascripts/vendor.js',
+  'public/scripts/vendor.js',
   'test/assets/test/scripts/ember.js',
-  'public/javascripts/app.js',
-  'public/test/javascripts/test-vendor.js',
+  'public/scripts/app.js',
+  'public/test/scripts/test-vendor.js',
   MOCHA_ADAPTER,
   'test/assets/test/scripts/test-browser.js',
-  'public/test/javascripts/test.js'
+  'public/test/scripts/test.js'
 ];
 
 
@@ -26,8 +26,8 @@ exclude = [
 
 
 // test results reporter to use
-// possible values: dots || progress
-reporter = 'dots';
+// possible[ values: dots || progress || junit || growl || coverage
+reporter = ['progress'];
 
 
 // web server port
@@ -64,4 +64,3 @@ browsers = [];
 // Continuous Integration mode
 // if true, it capture browsers, run tests and exit
 singleRun = false;
-

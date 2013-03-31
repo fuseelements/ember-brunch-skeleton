@@ -13,4 +13,3 @@ $().ready(function() {
   // Remember to view.destroy().
   $('<div id="fixture" style="display:none;"><div>').appendTo('body');
 });
-

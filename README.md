@@ -105,7 +105,7 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
       views/
       test-helpers.coffee
     /tools/
-      testacular.conf.js
+      karma.conf.js
     /vendor/
       scripts/
         bootstrap-2.2.2.js
@@ -165,13 +165,13 @@ Unit and integration tests are placed in the `test` directory. To run the tests 
 To run headless tests using brunch's built-in console-based test runner, execute `brunch test`. The
 headless tests launch Mocha in [jsdom](https://github.com/tmpvar/jsdom) console environment.
 
-### testacular server
+### karma server
 
-    $ testacular start ./tools/testacular.conf.js --no-auto-watch --browsers Chrome,Firefox
+    $ karma start ./tools/karma.conf.js --browsers Chrome,Firefox
 
-### testacular run
+### karma run
 
-    $ testacular run
+    $ karma run
 
 ## Resources
 
@@ -179,3 +179,4 @@ headless tests launch Mocha in [jsdom](https://github.com/tmpvar/jsdom) console 
 * [Chai](http://chaijs.com) is a BDD / TDD assertion library support assert, expect, and should matchers.
 * [Sinon](http://sinonjs.org) is test spy, stub, and mock library for JavaScript.
 * [Sinon-Chai](https://github.com/domenic/sinon-chai) extends Chai with assertions for the Sinon.JS mocking library.
+* [karma](http://karma-runner.github.com/) is a test runner for JavaScript projects.

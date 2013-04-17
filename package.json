@@ -25,6 +25,8 @@
     "ember-handlebars-brunch": "git://github.com/fuseelements/ember-handlebars-brunch"
   },
   "devDependencies": {
+    "brunch": "1.5",
+    "karma": "*",
     "chai": "*",
     "mocha": "*",
     "sinon": "*",

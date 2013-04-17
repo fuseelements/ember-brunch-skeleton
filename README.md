@@ -3,19 +3,17 @@
 ## Quick Start
 
 The following assumes you have installed [node](http://nodejs.org) 0.8.x and
-[npm](http://npmjs.org/) 1.1.x. Type:
+[npm](http://npmjs.org/) 1.1.x. To install the project's tool dependencies, execute `npm install` in the project directory.
 
-    npm install -g brunch
+To build the project, execute `./node_modules/bin/brunch build` in the project
+directory. The results of the build are output to the `public` sub-directory.
+A production build should append the command option `--optimize`;
+use `/node_modules/bin/brunch build --optimize` to produce a production deployment.
 
-To install the project's tool dependencies, execute `npm install` in the project directory.
-
-To build the project, execute `brunch build` in the project directory. The
-results of the build are output to the `public` sub-directory. A production build
-should append the command option `--optimize`; use `brunch build --optimize` to
-produce a production deployment.
-
-During development, to continuously rebuild the project on every change, execute `brunch watch`.
-To run the simple http development server, execute `brunch watch --server`. You can the visit <http://localhost:3333/develop.html> to load your app.
+During development, to continuously rebuild the project on every change,
+execute `./node_modules/bin/brunch watch`. To run the simple http development
+server, execute `./node_modules/bin/brunch watch --server`. You can
+visit <http://localhost:3333/develop.html> to load your app.
 
 ## Configure [git-flow](http://nvie.com/posts/a-successful-git-branching-model/) workflow support
 
@@ -50,7 +48,7 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
 2. Indent using soft tabs set at 2 spaces. Continuation indents should be set to 4 spaces.
 3. Use the strict mode pragma liberally (i.e., `'use strict';`).
 4. For the model, view, and controller, implement corresponding unit tests in the matching sub-directory of the `test` directory.
-5. The unit tests use the BDD expect assertion style. Unfortunately, the should assertion style is not compatible with IE.
+5. The unit tests use the TDD expect assertion style. Unfortunately, the BDD/should assertion style is not compatible with IE.
 
 ## Overview
 
@@ -167,11 +165,11 @@ headless tests launch Mocha in [jsdom](https://github.com/tmpvar/jsdom) console 
 
 ### karma server
 
-    $ karma start ./tools/karma.conf.js --browsers Chrome,Firefox
+    $ ./node_modules/bin/karma start ./tools/karma.conf.js --browsers Chrome,Firefox
 
 ### karma run
 
-    $ karma run
+    $ ./node_modules/bin/karma run
 
 ## Resources
 

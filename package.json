@@ -12,7 +12,7 @@
     "node": "0.8 || 0.10"
   },
   "scripts": {
-    "start": "brunch watch --server"
+    "start": "./node_modules/.bin/brunch watch --server"
   },
   "dependencies": {
     "javascript-brunch": "1.5",

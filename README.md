@@ -160,16 +160,19 @@ Unit and integration tests are placed in the `test` directory. To run the tests 
 1. Execute `npm start` or `brunch watch --server` in your project directory.
 2. Visit <http://localhost:3333/test> in your browser.
 
-To run headless tests using brunch's built-in console-based test runner, execute `brunch test`. The
-headless tests launch Mocha in [jsdom](https://github.com/tmpvar/jsdom) console environment.
+To run headless tests, install and use [karma](http://karma-runner.github.io).
+
+### install karma
+
+    $ npm install karma -g
 
 ### karma server
 
-    $ ./node_modules/bin/karma start ./tools/karma.conf.js --browsers Chrome,Firefox
+    $ karma start ./tools/karma.conf.js --browsers Chrome,Firefox
 
 ### karma run
 
-    $ ./node_modules/bin/karma run
+    $ karma run
 
 ## Resources
 
@@ -177,4 +180,3 @@ headless tests launch Mocha in [jsdom](https://github.com/tmpvar/jsdom) console 
 * [Chai](http://chaijs.com) is a BDD / TDD assertion library support assert, expect, and should matchers.
 * [Sinon](http://sinonjs.org) is test spy, stub, and mock library for JavaScript.
 * [Sinon-Chai](https://github.com/domenic/sinon-chai) extends Chai with assertions for the Sinon.JS mocking library.
-* [karma](http://karma-runner.github.com/) is a test runner for JavaScript projects.

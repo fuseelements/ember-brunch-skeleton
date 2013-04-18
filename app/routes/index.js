@@ -10,4 +10,4 @@ require('routes/map');
 
 // Require all custom routes below.
 
-//App.MyModel = require('./my_model');
+//App.AboutRoute = require('./about_route');

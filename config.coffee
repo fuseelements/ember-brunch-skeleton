@@ -62,11 +62,14 @@ exports.config =
       jquery: true
       node: true
     globals:
-      describe: false
-      chai: false
       DS: false
       Em: false
       Ember: false
-      it: false
+      Handlebars: false
       jQuery: false
       $: false
+      chai: false
+      describe: false
+      it: false
+      after: false
+      before: false

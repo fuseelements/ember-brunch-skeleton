@@ -2,6 +2,9 @@ exports.config =
   modules:
     addSourceURLs: true
 
+  conventions:
+    ignored: /^app\/styles\/_.*\.styl/
+
   files:
     javascripts:
       joinTo:
@@ -28,7 +31,7 @@ exports.config =
       root: 'templates/'
       defaultExtension: 'hbs'
       joinTo:
-        'scripts/app.js': /^app/
+        'scripts/app.js': /^app\/templates/
 
   server:
     port: 3333

@@ -13,4 +13,3 @@ module.exports =
   expect: chai.expect
   sinon: sinon
 #  should: chai.should()
-

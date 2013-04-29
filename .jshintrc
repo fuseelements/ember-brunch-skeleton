@@ -29,10 +29,9 @@
     "Handlebars": false,
     "jQuery": false,
     "$": false,
-    "chai": false,
     "describe": false,
     "it": false,
     "after": false,
-    "before": false,
+    "before": false
   }
 }

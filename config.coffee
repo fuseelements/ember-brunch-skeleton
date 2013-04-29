@@ -3,7 +3,7 @@ exports.config =
     addSourceURLs: true
 
   conventions:
-    ignored: /^app\/styles\/_.*\.styl/
+    ignored: /^app(\/|\\)styles(\/|\\)_.*\.styl/
 
   files:
     javascripts:
@@ -31,7 +31,7 @@ exports.config =
       root: 'templates/'
       defaultExtension: 'hbs'
       joinTo:
-        'scripts/app.js': /^app\/templates/
+        'scripts/app.js': /^app(\/|\\)templates/
 
   server:
     port: 3333
@@ -39,7 +39,7 @@ exports.config =
     run: no
 
   jshint:
-    pattern: /^(app|test)\/(?!vendor\/).*\.js$/
+    pattern: /^(app|test)(\/|\\)(?!vendor).*\.js$/
     options:
       bitwise: true
       camelcase: true

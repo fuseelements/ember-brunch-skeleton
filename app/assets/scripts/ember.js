@@ -1,5 +1,5 @@
-// Version: v1.0.0-rc.4
-// Last commit: 1acec81 (2013-05-27 20:18:28 -0500)
+// Version: v1.0.0-rc.4-8-g42857c9
+// Last commit: 42857c9 (2013-05-28 11:28:52 -0700)
 
 
 (function() {
@@ -151,8 +151,8 @@ Ember.deprecateFunc = function(message, func) {
 
 })();
 
-// Version: v1.0.0-rc.4
-// Last commit: 1acec81 (2013-05-27 20:18:28 -0500)
+// Version: v1.0.0-rc.4-8-g42857c9
+// Last commit: 42857c9 (2013-05-28 11:28:52 -0700)
 
 
 (function() {
@@ -4630,7 +4630,7 @@ define("backburner",
           method = target[method];
         }
 
-        var stack = new Error().stack,
+        var stack = this.DEBUG ? new Error().stack : undefined,
             args = arguments.length > 3 ? slice.call(arguments, 3) : undefined;
         if (!this.currentInstance) { createAutorun(this); }
         return this.currentInstance.schedule(queueName, target, method, args, false, stack);
@@ -4646,7 +4646,7 @@ define("backburner",
           method = target[method];
         }
 
-        var stack = new Error().stack,
+        var stack = this.DEBUG ? new Error().stack : undefined,
             args = arguments.length > 3 ? slice.call(arguments, 3) : undefined;
         if (!this.currentInstance) { createAutorun(this); }
         return this.currentInstance.schedule(queueName, target, method, args, true, stack);
@@ -4695,7 +4695,7 @@ define("backburner",
           clearTimeout(laterTimer);
           laterTimer = null;
         }
-        laterTimer = setTimeout(function() {
+        laterTimer = window.setTimeout(function() {
           executeTimers(self);
           laterTimer = null;
           laterTimerExpiresAt = null;
@@ -4716,7 +4716,7 @@ define("backburner",
           if (debouncee[0] === target && debouncee[1] === method) { return; } // do nothing
         }
 
-        var timer = setTimeout(function() {
+        var timer = window.setTimeout(function() {
           self.run.apply(self, args);
 
           // remove debouncee
@@ -4777,7 +4777,7 @@ define("backburner",
 
     function createAutorun(backburner) {
       backburner.begin();
-      autorun = setTimeout(function() {
+      autorun = window.setTimeout(function() {
         backburner.end();
         autorun = null;
       });
@@ -4802,7 +4802,7 @@ define("backburner",
       });
 
       if (timers.length) {
-        laterTimer = setTimeout(function() {
+        laterTimer = window.setTimeout(function() {
           executeTimers(self);
           laterTimer = null;
           laterTimerExpiresAt = null;
@@ -24907,6 +24907,9 @@ Ember.Route = Ember.Object.extend({
     Transition into another route while replacing the current URL if
     possible. Identical to `transitionTo` in all other respects.
 
+    Of the bundled location types, only `history` currently supports
+    this behavior.
+
     @method replaceWith
     @param {String} name the name of the route
     @param {...Object} models the
@@ -29913,8 +29916,8 @@ helper('wait', wait);
 
 
 })();
-// Version: v1.0.0-rc.4
-// Last commit: 1acec81 (2013-05-27 20:18:28 -0500)
+// Version: v1.0.0-rc.4-8-g42857c9
+// Last commit: 42857c9 (2013-05-28 11:28:52 -0700)
 
 
 (function() {

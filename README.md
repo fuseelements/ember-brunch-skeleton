@@ -101,7 +101,6 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
         styles/
           mocha-1.8.1.css
       views/
-      test-helpers.coffee
     /tools/
       karma.conf.js
     /vendor/

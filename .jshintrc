@@ -19,7 +19,6 @@
   "strict": true,
   "trailing": true,
   "browser": true,
-  "es5": true,
   "jquery": true,
   "node": true,
   "predef": {

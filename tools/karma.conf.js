@@ -15,7 +15,8 @@ files = [
   'public/test/scripts/test-vendor.js',
   MOCHA_ADAPTER,
   'test/assets/test/scripts/test-browser.js',
-  'public/test/scripts/test.js'
+  'public/test/scripts/test.js',
+  'public/test/scripts/load-tests.js'
 ];
 
 

@@ -89,6 +89,7 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
           scripts/
             ember.min.js
             jquery-1.9.1.min.js
+            load-tests.js
             test-browser.js
       controllers/
       models/

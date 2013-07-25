@@ -15,16 +15,16 @@
     "start": "./node_modules/.bin/brunch watch --server"
   },
   "dependencies": {
-    "javascript-brunch": "1.5",
-    "coffee-script-brunch": "1.5",
-    "css-brunch": "1.5",
-    "stylus-brunch": "1.5",
-    "uglify-js-brunch": "1.5",
-    "clean-css-brunch": "1.5",
-    "jshint-brunch": ">= 1.6",
+    "javascript-brunch": ">= 1.0 < 1.8",
+    "coffee-script-brunch": ">= 1.0 < 1.8",
+    "css-brunch": ">= 1.0 < 1.8",
+    "stylus-brunch": ">= 1.0 < 1.8",
+    "uglify-js-brunch": ">= 1.0 < 1.8",
+    "clean-css-brunch": ">= 1.0 < 1.8",
+    "jshint-brunch": ">= 1.6 < 1.8",
     "ember-handlebars-brunch": "git://github.com/fuseelements/ember-handlebars-brunch#fix/wrapper"
   },
   "devDependencies": {
-    "brunch": "1.5"
+    "brunch": "1.7"
   }
 }

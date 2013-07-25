@@ -4,12 +4,15 @@
 
 /*global mocha:false, $:false */
 
-mocha.setup({ui: 'bdd', globals:['XMLHttpRequest']});
-
-$().ready(function() {
+(function () {
   'use strict';
 
-  // Is the div to attach view DOM tests using `view.appendTo('#fixture')`.
-  // Remember to view.destroy().
-  $('<div id="fixture" style="display:none;"><div>').appendTo('body');
-});
+  mocha.setup({ui: 'bdd', globals:['XMLHttpRequest']});
+
+  $().ready(function () {
+    // Is the div to attach view DOM tests using `view.appendTo('#fixture')`.
+    // Remember to view.destroy().
+    $('<div id="fixture" style="display:none;"><div>').appendTo('body');
+  });
+
+}());

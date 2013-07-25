@@ -1,7 +1,4 @@
 exports.config =
-  modules:
-    addSourceURLs: true
-
   conventions:
     ignored: /^app(\/|\\)styles(\/|\\)_.*\.styl/
 

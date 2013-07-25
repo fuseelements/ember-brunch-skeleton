@@ -19,11 +19,11 @@
 nbproject
 Thumbs.db
 
-# NPM packages folder.
+# NPM packages folder
 node_modules/
 
 # Brunch folder for temporary files.
 tmp/
 
-# Brunch build  artifacts
+# Brunch build artifacts
 public/

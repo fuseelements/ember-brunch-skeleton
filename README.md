@@ -168,7 +168,7 @@ To run headless tests, install and use [karma](http://karma-runner.github.io).
 
 ### karma server
 
-    $ karma start ./tools/karma.conf.js --browsers Chrome,Firefox
+    $ karma start karma.conf.js --browsers Chrome,Firefox
 
 ### karma run
 

@@ -3,18 +3,19 @@
 
 
 // base path, that will be used to resolve files and exclude
-basePath = '..';
+basePath = '.';
 
 
 // list of files / patterns to load in the browser
 files = [
-  'test/assets/test/scripts/jquery-1.9.1.min.js',
+  'test/assets/test/scripts/jquery-2.0.2.min.js',
   'public/scripts/vendor.js',
-  'test/assets/test/scripts/ember.js',
+  'public/scripts/ember.js',
   'public/scripts/app.js',
   'public/test/scripts/test-vendor.js',
+  MOCHA,
   MOCHA_ADAPTER,
-  'test/assets/test/scripts/test-browser.js',
+  'public/test/scripts/test-browser.js',
   'public/test/scripts/test.js',
   'public/test/scripts/load-tests.js'
 ];

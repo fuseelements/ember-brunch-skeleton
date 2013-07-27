@@ -4,13 +4,17 @@
   <meta charset="utf-8">
   <title>Application</title>
   <link rel="stylesheet" href="styles/app.css">
+  <script type="text/javascript">
+    window.ENV = window.ENV || {};
+    window.ENV.DEVELOPMENT = window.ENV.DEVELOPMENT || true;
+  </script>
   <script src="//code.jquery.com/jquery-2.0.2.min.js"></script>
   <script src="scripts/vendor.js"></script>
   <script src="scripts/ember.js"></script>
   <script src="scripts/app.js"></script>
   <script>require('initialize');</script>
 </head>
-<body>
+<body class="development">
   <!-- ApplicationView -->
 </body>
 </html>

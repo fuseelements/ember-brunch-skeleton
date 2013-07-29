@@ -53,6 +53,7 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
 ## Overview
 
     config.coffee
+    karma.conf.js
     package.json
     README.md
     /app/
@@ -87,33 +88,27 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
         test/
           index.html
           scripts/
-            ember.min.js
-            jquery-1.9.1.min.js
+            jquery-2.0.2.min.js
             load-tests.js
             test-browser.js
       controllers/
       models/
       vendor/
         scripts/
-          chai-1.4.2.js
-          mocha-1.8.1.js
-          sinon-1.5.2.js
-          sinon-chai-2.3.1.js
+          chai-1.6.1.js
+          chai-as-promised-3.3.1.js
+          mocha-1.11.0.js
+          sinon-1.7.1.js
+          sinon-chai-2.4.0.js
         styles/
-          mocha-1.8.1.css
+          mocha-1.11.0.css
       views/
-    /tools/
-      karma.conf.js
     /vendor/
       scripts/
-        bootstrap-2.2.2.js
-        handlebars-1.0.0-rc.3.js
+        bootstrap.js
+        handlebars.js
       styles/
-        bootstrap-2.2.2.css
-    /public/
-      img/
-      stylesheets/
-      javascripts/
+        bootstrap.css
 
 * `config.coffee` contains your app configuration. This is where you configure what Plugins / Languages to use and what rules are applied to them.
 * `app/` and subdirectories (excluding `app/assets`) contains files that are to be compiled. Javascript files are automatically wrapped as commonjs style modules so they can be loaded via `require('module/location')`.

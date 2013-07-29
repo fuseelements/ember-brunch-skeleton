@@ -58,7 +58,7 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
     /app/
       assets/
         index.html
-        develop.html
+        development.html
         img/
           glyphicons-halflings-white.png
           glyphicons-halflings.png

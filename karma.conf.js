@@ -1,6 +1,4 @@
-// Testacular configuration
-// Generated on Mon Oct 01 2012 20:49:34 GMT-0400 (EDT)
-
+// karm configuration
 
 // base path, that will be used to resolve files and exclude
 basePath = '.';

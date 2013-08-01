@@ -25,6 +25,7 @@
     "ember-handlebars-brunch": "git://github.com/fuseelements/ember-handlebars-brunch#fix/wrapper"
   },
   "devDependencies": {
-    "brunch": "1.7"
+    "brunch": "1.7",
+    "karma": "*"
   }
 }

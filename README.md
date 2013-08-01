@@ -88,7 +88,7 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
         test/
           index.html
           scripts/
-            jquery-2.0.2.min.js
+            jquery.min.js
             load-tests.js
             test-browser.js
       controllers/
@@ -157,17 +157,13 @@ Unit and integration tests are placed in the `test` directory. To run the tests 
 
 To run headless tests, install and use [karma](http://karma-runner.github.io).
 
-### install karma
+### Start the karma server
 
-    $ npm install karma -g
+    $ ./node_modules/.bin/karma start karma.conf.js --browsers Chrome,Firefox
 
-### karma server
+### Execute one run of the test suite
 
-    $ karma start karma.conf.js --browsers Chrome,Firefox
-
-### karma run
-
-    $ karma run
+    $ ./node_modules/.bin/karma run
 
 ## Resources
 

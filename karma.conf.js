@@ -1,21 +1,21 @@
 // karm configuration
 
 // base path, that will be used to resolve files and exclude
-basePath = '.';
+basePath = 'public/';
 
 
 // list of files / patterns to load in the browser
 files = [
-  'test/assets/test/scripts/jquery-2.0.2.min.js',
-  'public/scripts/vendor.js',
-  'public/scripts/ember.js',
-  'public/scripts/app.js',
-  'public/test/scripts/test-vendor.js',
+  'test/scripts/jquery.min.js',
+  'scripts/vendor.js',
+  'scripts/ember.js',
+  'scripts/app.js',
+  'test/scripts/test-vendor.js',
   MOCHA,
   MOCHA_ADAPTER,
-  'public/test/scripts/test-browser.js',
-  'public/test/scripts/test.js',
-  'public/test/scripts/load-tests.js'
+  'test/scripts/test-browser.js',
+  'test/scripts/test.js',
+  'test/scripts/load-tests.js'
 ];
 
 

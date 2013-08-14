@@ -22,7 +22,7 @@
     "uglify-js-brunch": ">= 1.0 < 1.8",
     "clean-css-brunch": ">= 1.0 < 1.8",
     "jshint-brunch": ">= 1.6 < 1.8",
-    "ember-handlebars-brunch": "git://github.com/fuseelements/ember-handlebars-brunch#fix/wrapper"
+    "ember-handlebars-brunch": "git://github.com/fuseelements/ember-handlebars-brunch#fix/hbs-1.0.0"
   },
   "devDependencies": {
     "brunch": "1.7",

@@ -78,7 +78,6 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
       templates/
         about.hbs
         application.hbs
-        index.js
       views/
         index.js
       app.js
@@ -114,7 +113,7 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
 * `app/` and subdirectories (excluding `app/assets`) contains files that are to be compiled. Javascript files are automatically wrapped as commonjs style modules so they can be loaded via `require('module/location')`.
 * `app/assets` contains images / static files. The contents of the directory are copied to `public/` without any modification.
 * `app/controllers/index.js`, `app/models/index.js`, `app/routes/index.js`, and `app/views/index.js` are loaded in `initialize.js` and are responsible for loading their respective classes.
-* `app/templates/index.js` is loaded in `initialize.js` to register pre-compiled templates in Ember.TEMPLATES.
+* Pre-compiled templates in `app/templates/` are automatically registered in Ember.TEMPLATES.
 * `test/` contains unit tests.
 * `vendor/` contains all third-party code. The code wouldn’t be wrapped in modules, it would be loaded directly into the browser.
 

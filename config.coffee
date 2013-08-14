@@ -1,6 +1,7 @@
 exports.config =
   conventions:
-    ignored: /^app(\/|\\)styles(\/|\\)_.*\.styl/
+    # Only ignore partial stylus files as these files are imported by the Stylus compiler.
+    ignored: /^app(\/|\\)styles(\/|\\)(.*?\/|.*?\\)?_.*\.styl/
 
   files:
     javascripts:

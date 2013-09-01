@@ -672,8 +672,14 @@ exports.isatty = function(){
 };
 
 exports.getWindowSize = function(){
-  return [window.innerHeight, window.innerWidth];
+  if ('innerHeight' in global) {
+    return [global.innerHeight, global.innerWidth];
+  } else {
+    // In a Web Worker, the DOM Window is not available.
+    return [640, 480];
+  }
 };
+
 }); // module: browser/tty.js
 
 require.register("context.js", function(module, exports, require){
@@ -813,7 +819,8 @@ require.register("interfaces/bdd.js", function(module, exports, require){
  */
 
 var Suite = require('../suite')
-  , Test = require('../test');
+  , Test = require('../test')
+  , utils = require('../utils');
 
 /**
  * BDD-style interface:
@@ -926,7 +933,8 @@ module.exports = function(suite){
 
     context.it.only = function(title, fn){
       var test = context.it(title, fn);
-      mocha.grep(test.fullTitle());
+      var reString = '^' + utils.escapeRegexp(test.fullTitle()) + '$';
+      mocha.grep(new RegExp(reString));
     };
 
     /**
@@ -1023,7 +1031,8 @@ require.register("interfaces/qunit.js", function(module, exports, require){
  */
 
 var Suite = require('../suite')
-  , Test = require('../test');
+  , Test = require('../test')
+  , utils = require('../utils');
 
 /**
  * QUnit-style interface:
@@ -1125,7 +1134,8 @@ module.exports = function(suite){
 
     context.test.only = function(title, fn){
       var test = context.test(title, fn);
-      mocha.grep(test.fullTitle());
+      var reString = '^' + utils.escapeRegexp(test.fullTitle()) + '$';
+      mocha.grep(new RegExp(reString));
     };
 
     /**
@@ -1147,7 +1157,8 @@ require.register("interfaces/tdd.js", function(module, exports, require){
  */
 
 var Suite = require('../suite')
-  , Test = require('../test');
+  , Test = require('../test')
+  , utils = require('../utils');;
 
 /**
  * TDD-style interface:
@@ -1226,6 +1237,17 @@ module.exports = function(suite){
     };
 
     /**
+     * Pending suite.
+     */
+    context.suite.skip = function(title, fn) {
+      var suite = Suite.create(suites[0], title);
+      suite.pending = true;
+      suites.unshift(suite);
+      fn.call(suite);
+      suites.shift();
+    };
+
+    /**
      * Exclusive test-case.
      */
 
@@ -1241,8 +1263,10 @@ module.exports = function(suite){
      */
 
     context.test = function(title, fn){
+      var suite = suites[0];
+      if (suite.pending) var fn = null;
       var test = new Test(title, fn);
-      suites[0].addTest(test);
+      suite.addTest(test);
       return test;
     };
 
@@ -1252,7 +1276,8 @@ module.exports = function(suite){
 
     context.test.only = function(title, fn){
       var test = context.test(title, fn);
-      mocha.grep(test.fullTitle());
+      var reString = '^' + utils.escapeRegexp(test.fullTitle()) + '$';
+      mocha.grep(new RegExp(reString));
     };
 
     /**
@@ -1340,7 +1365,7 @@ function Mocha(options) {
   this.ui(options.ui);
   this.bail(options.bail);
   this.reporter(options.reporter);
-  if (options.timeout) this.timeout(options.timeout);
+  if (typeof options.timeout === 'number') this.timeout(options.timeout);
   if (options.slow) this.slow(options.slow);
 }
 
@@ -1479,12 +1504,13 @@ Mocha.prototype.invert = function(){
 /**
  * Ignore global leaks.
  *
+ * @param {Boolean} ignore
  * @return {Mocha}
  * @api public
  */
 
-Mocha.prototype.ignoreLeaks = function(){
-  this.options.ignoreLeaks = true;
+Mocha.prototype.ignoreLeaks = function(ignore){
+  this.options.ignoreLeaks = !!ignore;
   return this;
 };
 
@@ -1588,7 +1614,6 @@ Mocha.prototype.run = function(fn){
 }); // module: mocha.js
 
 require.register("ms.js", function(module, exports, require){
-
 /**
  * Helpers.
  */
@@ -1597,19 +1622,28 @@ var s = 1000;
 var m = s * 60;
 var h = m * 60;
 var d = h * 24;
+var y = d * 365.25;
 
 /**
  * Parse or format the given `val`.
  *
+ * Options:
+ *
+ *  - `long` verbose formatting [false]
+ *
  * @param {String|Number} val
+ * @param {Object} options
  * @return {String|Number}
  * @api public
  */
 
-module.exports = function(val){
+module.exports = function(val, options){
+  options = options || {};
   if ('string' == typeof val) return parse(val);
-  return format(val);
-}
+  return options.long
+    ? long(val)
+    : short(val);
+};
 
 /**
  * Parse the given `str` and return milliseconds.
@@ -1620,55 +1654,78 @@ module.exports = function(val){
  */
 
 function parse(str) {
-  var m = /^((?:\d+)?\.?\d+) *(ms|seconds?|s|minutes?|m|hours?|h|days?|d|years?|y)?$/i.exec(str);
-  if (!m) return;
-  var n = parseFloat(m[1]);
-  var type = (m[2] || 'ms').toLowerCase();
+  var match = /^((?:\d+)?\.?\d+) *(ms|seconds?|s|minutes?|m|hours?|h|days?|d|years?|y)?$/i.exec(str);
+  if (!match) return;
+  var n = parseFloat(match[1]);
+  var type = (match[2] || 'ms').toLowerCase();
   switch (type) {
     case 'years':
     case 'year':
     case 'y':
-      return n * 31557600000;
+      return n * y;
     case 'days':
     case 'day':
     case 'd':
-      return n * 86400000;
+      return n * d;
     case 'hours':
     case 'hour':
     case 'h':
-      return n * 3600000;
+      return n * h;
     case 'minutes':
     case 'minute':
     case 'm':
-      return n * 60000;
+      return n * m;
     case 'seconds':
     case 'second':
     case 's':
-      return n * 1000;
+      return n * s;
     case 'ms':
       return n;
   }
 }
 
 /**
- * Format the given `ms`.
+ * Short format for `ms`.
  *
  * @param {Number} ms
  * @return {String}
- * @api public
+ * @api private
  */
 
-function format(ms) {
-  if (ms == d) return Math.round(ms / d) + ' day';
-  if (ms > d) return Math.round(ms / d) + ' days';
-  if (ms == h) return Math.round(ms / h) + ' hour';
-  if (ms > h) return Math.round(ms / h) + ' hours';
-  if (ms == m) return Math.round(ms / m) + ' minute';
-  if (ms > m) return Math.round(ms / m) + ' minutes';
-  if (ms == s) return Math.round(ms / s) + ' second';
-  if (ms > s) return Math.round(ms / s) + ' seconds';
-  return ms + ' ms';
+function short(ms) {
+  if (ms >= d) return Math.round(ms / d) + 'd';
+  if (ms >= h) return Math.round(ms / h) + 'h';
+  if (ms >= m) return Math.round(ms / m) + 'm';
+  if (ms >= s) return Math.round(ms / s) + 's';
+  return ms + 'ms';
 }
+
+/**
+ * Long format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function long(ms) {
+  return plural(ms, d, 'day')
+    || plural(ms, h, 'hour')
+    || plural(ms, m, 'minute')
+    || plural(ms, s, 'second')
+    || ms + ' ms';
+}
+
+/**
+ * Pluralization helper.
+ */
+
+function plural(ms, n, name) {
+  if (ms < n) return;
+  if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;
+  return Math.ceil(ms / n) + ' ' + name + 's';
+}
+
 }); // module: ms.js
 
 require.register("reporters/base.js", function(module, exports, require){
@@ -1835,11 +1892,16 @@ exports.list = function(failures){
       , expected = err.expected
       , escape = true;
 
+    // uncaught
+    if (err.uncaught) {
+      msg = 'Uncaught ' + msg;
+    }
+
     // explicitly show diff
-    if (err.showDiff) {
+    if (err.showDiff && sameType(actual, expected)) {
       escape = false;
-      err.actual = actual = JSON.stringify(actual, null, 2);
-      err.expected = expected = JSON.stringify(expected, null, 2);
+      err.actual = actual = stringify(actual);
+      err.expected = expected = stringify(expected);
     }
 
     // actual / expected diff
@@ -1953,48 +2015,38 @@ function Base(runner) {
  */
 
 Base.prototype.epilogue = function(){
-  var stats = this.stats
-    , fmt
-    , tests;
+  var stats = this.stats;
+  var tests;
+  var fmt;
 
   console.log();
 
-  function pluralize(n) {
-    return 1 == n ? 'test' : 'tests';
-  }
-
-  // failure
-  if (stats.failures) {
-    fmt = color('bright fail', '  ' + exports.symbols.err)
-      + color('fail', ' %d of %d %s failed')
-      + color('light', ':')
-
-    console.error(fmt,
-      stats.failures,
-      this.runner.total,
-      pluralize(this.runner.total));
-
-    Base.list(this.failures);
-    console.error();
-    return;
-  }
-
-  // pass
+  // passes
   fmt = color('bright pass', ' ')
-    + color('green', ' %d %s complete')
+    + color('green', ' %d passing')
     + color('light', ' (%s)');
 
   console.log(fmt,
-    stats.tests || 0,
-    pluralize(stats.tests),
+    stats.passes || 0,
     ms(stats.duration));
 
   // pending
   if (stats.pending) {
     fmt = color('pending', ' ')
-      + color('pending', ' %d %s pending');
+      + color('pending', ' %d pending');
 
-    console.log(fmt, stats.pending, pluralize(stats.pending));
+    console.log(fmt, stats.pending);
+  }
+
+  // failures
+  if (stats.failures) {
+    fmt = color('fail', '  %d failing');
+
+    console.error(fmt,
+      stats.failures);
+
+    Base.list(this.failures);
+    console.error();
   }
 
   console.log();
@@ -2049,6 +2101,34 @@ function colorLines(name, str) {
   return str.split('\n').map(function(str){
     return color(name, str);
   }).join('\n');
+}
+
+/**
+ * Stringify `obj`.
+ *
+ * @param {Mixed} obj
+ * @return {String}
+ * @api private
+ */
+
+function stringify(obj) {
+  if (obj instanceof RegExp) return obj.toString();
+  return JSON.stringify(obj, null, 2);
+}
+
+/**
+ * Check that a / b have the same type.
+ *
+ * @param {Object} a
+ * @param {Object} b
+ * @return {Boolean}
+ * @api private
+ */
+
+function sameType(a, b) {
+  a = Object.prototype.toString.call(a);
+  b = Object.prototype.toString.call(b);
+  return a == b;
 }
 
 }); // module: reporters/base.js
@@ -3149,7 +3229,6 @@ exports = module.exports = NyanCat;
 
 function NyanCat(runner) {
   Base.call(this, runner);
-
   var self = this
     , stats = this.stats
     , width = Base.window.width * .75 | 0
@@ -3165,19 +3244,19 @@ function NyanCat(runner) {
 
   runner.on('start', function(){
     Base.cursor.hide();
-    self.draw('start');
+    self.draw();
   });
 
   runner.on('pending', function(test){
-    self.draw('pending');
+    self.draw();
   });
 
   runner.on('pass', function(test){
-    self.draw('pass');
+    self.draw();
   });
 
   runner.on('fail', function(test, err){
-    self.draw('fail');
+    self.draw();
   });
 
   runner.on('end', function(){
@@ -3188,17 +3267,16 @@ function NyanCat(runner) {
 }
 
 /**
- * Draw the nyan cat with runner `status`.
+ * Draw the nyan cat
  *
- * @param {String} status
  * @api private
  */
 
-NyanCat.prototype.draw = function(status){
+NyanCat.prototype.draw = function(){
   this.appendRainbow();
   this.drawScoreboard();
   this.drawRainbow();
-  this.drawNyanCat(status);
+  this.drawNyanCat();
   this.tick = !this.tick;
 };
 
@@ -3263,44 +3341,33 @@ NyanCat.prototype.drawRainbow = function(){
 };
 
 /**
- * Draw the nyan cat with `status`.
+ * Draw the nyan cat
  *
- * @param {String} status
  * @api private
  */
 
-NyanCat.prototype.drawNyanCat = function(status) {
+NyanCat.prototype.drawNyanCat = function() {
   var self = this;
   var startWidth = this.scoreboardWidth + this.trajectories[0].length;
   var color = '\u001b[' + startWidth + 'C';
   var padding = '';
-  
+
   write(color);
   write('_,------,');
   write('\n');
-  
+
   write(color);
   padding = self.tick ? '  ' : '   ';
   write('_|' + padding + '/\\_/\\ ');
   write('\n');
-  
+
   write(color);
   padding = self.tick ? '_' : '__';
   var tail = self.tick ? '~' : '^';
   var face;
-  switch (status) {
-    case 'pass':
-      face = '( ^ .^)';
-      break;
-    case 'fail':
-      face = '( o .o)';
-      break;
-    default:
-      face = '( - .-)';
-  }
-  write(tail + '|' + padding + face + ' ');
+  write(tail + '|' + padding + this.face() + ' ');
   write('\n');
-  
+
   write(color);
   padding = self.tick ? ' ' : '  ';
   write(padding + '""  "" ');
@@ -3308,6 +3375,26 @@ NyanCat.prototype.drawNyanCat = function(status) {
 
   this.cursorUp(this.numberOfLines);
 };
+
+/**
+ * Draw nyan cat face.
+ *
+ * @return {String}
+ * @api private
+ */
+
+NyanCat.prototype.face = function() {
+  var stats = this.stats;
+  if (stats.failures) {
+    return '( x .x)';
+  } else if (stats.pending) {
+    return '( o .o)';
+  } else if(stats.passes) {
+    return '( ^ .^)';
+  } else {
+    return '( - .-)';
+  }
+}
 
 /**
  * Move cursor up `n`.
@@ -3775,9 +3862,9 @@ function XUnit(runner) {
       , tests: stats.tests
       , failures: stats.failures
       , errors: stats.failures
-      , skip: stats.tests - stats.failures - stats.passes
+      , skipped: stats.tests - stats.failures - stats.passes
       , timestamp: (new Date).toUTCString()
-      , time: stats.duration / 1000
+      , time: (stats.duration / 1000) || 0
     }, false));
 
     tests.forEach(test);
@@ -3983,16 +4070,14 @@ Runnable.prototype.inspect = function(){
  */
 
 Runnable.prototype.resetTimeout = function(){
-  var self = this
-    , ms = this.timeout();
+  var self = this;
+  var ms = this.timeout() || 1e9;
 
   this.clearTimeout();
-  if (ms) {
-    this.timer = setTimeout(function(){
-      self.callback(new Error('timeout of ' + ms + 'ms exceeded'));
-      self.timedOut = true;
-    }, ms);
-  }
+  this.timer = setTimeout(function(){
+    self.callback(new Error('timeout of ' + ms + 'ms exceeded'));
+    self.timedOut = true;
+  }, ms);
 };
 
 /**
@@ -4073,7 +4158,6 @@ Runnable.prototype.run = function(fn){
 }); // module: runnable.js
 
 require.register("runner.js", function(module, exports, require){
-
 /**
  * Module dependencies.
  */
@@ -4119,6 +4203,7 @@ module.exports = Runner;
  *   - `hook end`  (hook) hook complete
  *   - `pass`  (test) test passed
  *   - `fail`  (test, err) test failed
+ *   - `pending`  (test) test pending
  *
  * @api public
  */
@@ -4311,7 +4396,10 @@ Runner.prototype.hook = function(name, fn){
   function next(i) {
     var hook = hooks[i];
     if (!hook) return fn();
+    if (self.failures && suite.bail()) return fn();
     self.currentRunnable = hook;
+
+    hook.ctx.currentTest = self.test;
 
     self.emit('hook', hook);
 
@@ -4325,6 +4413,7 @@ Runner.prototype.hook = function(name, fn){
       if (testError) self.fail(self.test, testError);
       if (err) return self.failHook(hook, err);
       self.emit('hook end', hook);
+      delete hook.ctx.currentTest;
       next(++i);
     });
   }
@@ -4968,7 +5057,6 @@ Test.prototype.constructor = Test;
 }); // module: test.js
 
 require.register("utils.js", function(module, exports, require){
-
 /**
  * Module dependencies.
  */
@@ -5133,7 +5221,7 @@ exports.files = function(dir, ret){
     path = join(dir, path);
     if (fs.statSync(path).isDirectory()) {
       exports.files(path, ret);
-    } else if (path.match(/\.(js|coffee)$/)) {
+    } else if (path.match(/\.(js|coffee|litcoffee|coffee.md)$/)) {
       ret.push(path);
     }
   });
@@ -5166,8 +5254,8 @@ exports.clean = function(str) {
     .replace(/^function *\(.*\) *{/, '')
     .replace(/\s+\}$/, '');
 
-  var spaces = str.match(/^\n?( *)/)[1].length
-    , re = new RegExp('^ {' + spaces + '}', 'gm');
+  var whitespace = str.match(/^\n?(\s*)/)[1]
+    , re = new RegExp('^' + whitespace, 'gm');
 
   str = str.replace(re, '');
 
@@ -5252,16 +5340,18 @@ exports.highlightTags = function(name) {
 };
 
 }); // module: utils.js
+// The global object is "self" in Web Workers.
+global = (function() { return this; })();
 
 /**
  * Save timer references to avoid Sinon interfering (see GH-237).
  */
 
-var Date = window.Date;
-var setTimeout = window.setTimeout;
-var setInterval = window.setInterval;
-var clearTimeout = window.clearTimeout;
-var clearInterval = window.clearInterval;
+var Date = global.Date;
+var setTimeout = global.setTimeout;
+var setInterval = global.setInterval;
+var clearTimeout = global.clearTimeout;
+var clearInterval = global.clearInterval;
 
 /**
  * Node shims.
@@ -5275,7 +5365,6 @@ var clearInterval = window.clearInterval;
 var process = {};
 process.exit = function(status){};
 process.stdout = {};
-global = window;
 
 /**
  * Remove uncaughtException listener.
@@ -5283,7 +5372,7 @@ global = window;
 
 process.removeListener = function(e){
   if ('uncaughtException' == e) {
-    window.onerror = null;
+    global.onerror = function() {};
   }
 };
 
@@ -5293,7 +5382,7 @@ process.removeListener = function(e){
 
 process.on = function(e, fn){
   if ('uncaughtException' == e) {
-    window.onerror = function(err, url, line){
+    global.onerror = function(err, url, line){
       fn(new Error(err + ' (' + url + ':' + line + ')'));
     };
   }
@@ -5303,8 +5392,8 @@ process.on = function(e, fn){
  * Expose mocha.
  */
 
-var Mocha = window.Mocha = require('mocha'),
-    mocha = window.mocha = new Mocha({ reporter: 'html' });
+var Mocha = global.Mocha = require('mocha'),
+    mocha = global.mocha = new Mocha({ reporter: 'html' });
 
 var immediateQueue = []
   , immediateTimeout;
@@ -5339,7 +5428,7 @@ Mocha.Runner.immediately = function(callback) {
 
 mocha.ui = function(ui){
   Mocha.prototype.ui.call(this, ui);
-  this.suite.emit('pre-require', window, null, this);
+  this.suite.emit('pre-require', global, null, this);
   return this;
 };
 
@@ -5361,13 +5450,22 @@ mocha.run = function(fn){
   var options = mocha.options;
   mocha.globals('location');
 
-  var query = Mocha.utils.parseQuery(window.location.search || '');
+  var query = Mocha.utils.parseQuery(global.location.search || '');
   if (query.grep) mocha.grep(query.grep);
   if (query.invert) mocha.invert();
 
   return Mocha.prototype.run.call(mocha, function(){
-    Mocha.utils.highlightTags('code');
+    // The DOM Document is not available in Web Workers.
+    if (global.document) {
+      Mocha.utils.highlightTags('code');
+    }
     if (fn) fn();
   });
 };
+
+/**
+ * Expose the process shim.
+ */
+
+Mocha.process = process;
 })();

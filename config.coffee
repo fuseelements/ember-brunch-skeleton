@@ -7,14 +7,14 @@ exports.config =
     javascripts:
       joinTo:
         'scripts/app.js': /^app/
-        'scripts/vendor.js': /^vendor/
+        'scripts/vendor-before-ember.js': /^vendor(\/|\\)scripts(\/|\\)before-ember/
+        'scripts/vendor-before-app.js': /^vendor(\/|\\)scripts(\/|\\)before-app/
         'test/scripts/test.js': /^test(\/|\\)(?!vendor)/
         'test/scripts/test-vendor.js': /^test(\/|\\)(?=vendor)/
 
       order:
         before: [
           'vendor/scripts/bootstrap.js'
-          'vendor/scripts/handlebars-1.0.rc.3.js'
         ]
 
     stylesheets:
@@ -22,7 +22,9 @@ exports.config =
         'styles/app.css': /^(app|vendor)/
         'test/styles/test.css': /^test/
       order:
-        before: ['vendor/styles/bootstrap.css']
+        before: [
+          'vendor/styles/bootstrap.css'
+        ]
 
     templates:
       precompile: true

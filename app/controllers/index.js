@@ -6,6 +6,6 @@
 
 var App = require('app');
 
-// Require all custom route controllers below.
+// Register custom controllers by requiring below.
 
 //App.MyController = require('controllers/my_controller');

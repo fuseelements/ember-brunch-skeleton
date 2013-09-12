@@ -6,6 +6,6 @@
 
 var App = require('app');
 
-// Require all custom views below.
+// Register custom views by requiring below.
 
 //App.MyView = require('views/myview');

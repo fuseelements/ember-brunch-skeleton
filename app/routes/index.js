@@ -8,6 +8,6 @@ var App = require('app');
 
 require('routes/map');
 
-// Require all custom routes below.
+// Register custom routes by requiring below.
 
 //App.AboutRoute = require('./about_route');

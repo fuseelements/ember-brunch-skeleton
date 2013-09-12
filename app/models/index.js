@@ -6,6 +6,6 @@
 
 var App = require('app');
 
-// Require all findable models below.
+// Register custom models by requiring below.
 
 //App.MyModel = require('./my_model');

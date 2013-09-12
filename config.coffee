@@ -7,14 +7,14 @@ exports.config =
     javascripts:
       joinTo:
         'scripts/app.js': /^app/
-        'scripts/vendor-before-ember.js': /^vendor(\/|\\)scripts(\/|\\)before-ember/
-        'scripts/vendor-before-app.js': /^vendor(\/|\\)scripts(\/|\\)before-app/
+        'scripts/vendor.js': /^vendor/
         'test/scripts/test.js': /^test(\/|\\)(?!vendor)/
         'test/scripts/test-vendor.js': /^test(\/|\\)(?=vendor)/
 
       order:
         before: [
           'vendor/scripts/bootstrap.js'
+          'vendor/scripts/handlebar.js'
         ]
 
     stylesheets:

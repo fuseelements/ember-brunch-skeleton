@@ -29,4 +29,5 @@ registerTemplates();
 require('models');
 require('controllers');
 require('views');
+require('components');
 require('routes');

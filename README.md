@@ -40,6 +40,7 @@ visit <http://localhost:3333/develop.html> to load your app.
 4. Views communicate with the controller, not directly with the model objects.
 5. View template context is automatically bound to its controller.
 6. The router coordinates application state and transtitions between states.
+7. Consider creating custom Ember.Components instead of views where you can minimize dependencies on the context (e.g., controller).
 
 ## Coding Guidelines
 
@@ -66,6 +67,8 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
         scripts/
           ember.js
           ember.min.js
+      components/
+        index.js
       controllers/
         index.js
       models/
@@ -76,6 +79,7 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
       styles/
         application.styl
       templates/
+        components/
         about.hbs
         application.hbs
       views/
@@ -112,8 +116,9 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
 * `config.coffee` contains your app configuration. This is where you configure what Plugins / Languages to use and what rules are applied to them.
 * `app/` and subdirectories (excluding `app/assets`) contains files that are to be compiled. Javascript files are automatically wrapped as commonjs style modules so they can be loaded via `require('module/location')`.
 * `app/assets` contains images / static files. The contents of the directory are copied to `public/` without any modification.
-* `app/controllers/index.js`, `app/models/index.js`, `app/routes/index.js`, and `app/views/index.js` are loaded in `initialize.js` and are responsible for loading their respective classes.
+* `app/components/index.js`, `app/controllers/index.js`, `app/models/index.js`, `app/routes/index.js`, and `app/views/index.js` are loaded in `initialize.js` and are responsible for loading their respective classes.
 * Pre-compiled templates in `app/templates/` are automatically registered in Ember.TEMPLATES.
+* Component templates are placed in `app/templates/components` and are automatically registered in Ember.TEMPLATES.
 * `test/` contains unit tests.
 * `vendor/` contains all third-party code. The code wouldn’t be wrapped in modules, it would be loaded directly into the browser.
 

@@ -77,7 +77,9 @@ JSHint is available as a editor/IDE [plugin](http://www.jshint.com/platforms/).
         index.js
         map.js
       styles/
+        components/
         application.styl
+        development.styl
       templates/
         components/
         about.hbs

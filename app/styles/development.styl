@@ -1,0 +1,17 @@
+//
+// Copyright (c) 2013 Fuse Elements, LLC. All rights reserved.
+//
+
+@import 'nib'
+
+// Use the `development` CSS class to add development only style rules.
+.development
+  // Add layout guides to all elements.
+  *
+    border 1px dashed purple
+
+  // Show when ember causes a render to occur visually.
+  // See http://www.reddit.com/r/emberjs/comments/1la7m9/simple_visual_way_to_detect_unnecessary_renders/
+  @keyframes domChanged { from { background: yellow; } }
+  @-webkit-keyframes domChanged { from { background: yellow; } }
+  .ember-view { animation: domChanged 1s; -webkit-animation: domChanged 1s; }

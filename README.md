@@ -2,8 +2,9 @@
 
 ## Quick Start
 
-The following assumes you have installed [node](http://nodejs.org) 0.8.x and
-[npm](http://npmjs.org/) 1.1.x. To install the project's tool dependencies, execute `npm install` in the project directory.
+The following assumes you have installed [node](http://nodejs.org) 0.10 and
+[npm](http://npmjs.org/) 1.3. To install the project's tool dependencies,
+execute `npm install` in the project directory.
 
 To build the project, execute `./node_modules/bin/brunch build` in the project
 directory. The results of the build are output to the `public` sub-directory.

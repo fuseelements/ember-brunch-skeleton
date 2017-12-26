@@ -174,7 +174,7 @@ To run headless tests, install and use [karma](http://karma-runner.github.io).
 
 ## Resources
 
-* [Mocha](http://visionmedia.github.com/mocha/) is a JavaScript test framework with excellent asynchronous testing support and versatile reporting.
+* [Mocha](http://mochajs.org/) is a JavaScript test framework with excellent asynchronous testing support and versatile reporting.
 * [Chai](http://chaijs.com) is a BDD / TDD assertion library support assert, expect, and should matchers.
 * [Sinon](http://sinonjs.org) is test spy, stub, and mock library for JavaScript.
 * [Sinon-Chai](https://github.com/domenic/sinon-chai) extends Chai with assertions for the Sinon.JS mocking library.
